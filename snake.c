@@ -16,7 +16,8 @@ void clearGrid(char grid[ROW][COL]){
 }
 
 void init_snake(int snake[], int *snake_size){
-	*snake_size = 3;
+	// This function initialize snake. It sets it body parts next to each other
+	*snake_size = 5;
 	for(int i = 0; i < *snake_size; i++){
 		snake[i] = 5 * 100 + (5 + i);
 	}
@@ -51,6 +52,7 @@ void move_snake(int snake[], int *snake_size, int snake_facing){
 
 
 int main(void){
+	// Initializing ncurses for getting real time input
 	initscr();
     cbreak();
     noecho();
@@ -58,30 +60,42 @@ int main(void){
     nodelay(stdscr, TRUE);
 
 	char grid[ROW][COL];
-	clearGrid(grid);
 
-	int snake[ROW * COL];
-	int snake_size;
-	init_snake(snake, &snake_size);
+	int snake[ROW * COL], snake_size;
 	char snake_facing = '>';
 
+	clearGrid(grid);
+	init_snake(snake, &snake_size);
+
 	int i, j;
-    int buf;
-	char run = 1, move_delay = 12, move_delay_index = 0;
+    char buf, run = 1, moved = 0,
+		 move_delay = 12, move_delay_index = 0;
     while (run){
 		buf = getch();
         switch (buf){
             case 'd':
-				snake_facing = '>';
+				if((snake_facing != '<') && !moved){
+					snake_facing = '>';
+					moved = 1;
+				}
                 break;
             case 'w':
-				snake_facing = '^';
+				if((snake_facing != 'v') && !moved){
+					snake_facing = '^';
+					moved = 1;
+				}
                 break;
             case 'a':
-				snake_facing = '<';
+				if((snake_facing != '>') && !moved){
+					snake_facing = '<';
+					moved = 1;
+				}
                 break;
             case 's':
-				snake_facing = 'v';
+				if((snake_facing != '^') && !moved){
+					snake_facing = 'v';
+					moved = 1;
+				}
                 break;
             case 'q':
                 run = 0;
@@ -92,6 +106,7 @@ int main(void){
 		if(move_delay < move_delay_index){
 			move_snake(snake, &snake_size, snake_facing);
 			move_delay_index = 0;
+			moved = 0;
 		}
 
 		for(i = 0; i < snake_size - 1; i++){
