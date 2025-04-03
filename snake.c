@@ -7,7 +7,6 @@
 #define DIG 100
 
 void clearGrid(char grid[ROW][COL]){
-	// This function clears the grid
 	for(int i = 0; i < ROW; i++){
 		for(int j = 0; j < COL; j++){
 			grid[i][j] = ' ';
