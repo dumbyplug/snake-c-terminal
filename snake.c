@@ -28,7 +28,21 @@ void init_snake(int snake[], int *snake_size){
 	}
 }
 
-void move_snake(int snake[], int *snake_size, int snake_facing){
+
+//checking to see if snake's head collides with walls' symbols or its body's symbols
+char collision_check(int snake[], int snake_size, char grid[ROW][COL]){
+	switch (grid[snake[snake_size - 1] / 100][snake[snake_size - 1] % 100]){
+		case '|':
+			return 2;
+		case '-':
+			return 2;
+		case '#':
+			return 2;
+	}
+
+	return 0;
+}
+void move_snake(int snake[], int *snake_size, char snake_facing){
 	int i, row, column;
 	switch(snake_facing){
 		case '>':
@@ -65,6 +79,8 @@ int main(void){
     nodelay(stdscr, TRUE);
 
 	char grid[ROW][COL];
+
+
 
 	int snake[ROW * COL], snake_size;
 	char snake_facing = '>';
@@ -117,6 +133,11 @@ int main(void){
 		for(i = 0; i < snake_size - 1; i++){
 			grid[snake[i] / 100][snake[i] % 100] = '#';
 		} 
+		//Check the head before overwriting.
+		if (collision_check(snake,snake_size,grid) == 2){
+			run = 0;
+		}
+
 		grid[snake[snake_size - 1] / 100][snake[snake_size - 1] % 100] = '@';
 
 		for(i = 0; i < ROW; i++){
