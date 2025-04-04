@@ -2,15 +2,20 @@
 #include <stdio.h>
 #include <ncurses.h>
 
-#define COL 20
-#define ROW 10
+#define COL 24
+#define ROW 12
 #define DIG 100
 
 void clearGrid(char grid[ROW][COL]){
 	// This function clears the grid. Fills every cell with whitespace
 	for(int i = 0; i < ROW; i++){
 		for(int j = 0; j < COL; j++){
-			grid[i][j] = ' ';
+			if((i == 0) || (i == ROW - 1))
+				grid[i][j] = '-';
+			else if((j == 0) || (j == COL - 1))
+				grid[i][j] = '|';
+			else
+				grid[i][j] = ' ';
 		}
 	}
 }
