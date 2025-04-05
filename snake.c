@@ -24,14 +24,14 @@ void init_snake(int snake[], int *snake_size){
 	// This function initialize snake. It sets it body parts next to each other
 	*snake_size = 5;
 	for(int i = 0; i < *snake_size; i++){
-		snake[i] = 5 * 100 + (5 + i);
+		snake[i] = 5 * DIG + (5 + i);
 	}
 }
 
 
 //checking to see if snake's head collides with walls' symbols or its body's symbols
 char collision_check(int snake[], int snake_size, char grid[ROW][COL]){
-	switch (grid[snake[snake_size - 1] / 100][snake[snake_size - 1] % 100]){
+	switch (grid[snake[snake_size - 1] / DIG][snake[snake_size - 1] % DIG]){
 		case '|':
 			return 2;
 		case '-':
@@ -42,30 +42,31 @@ char collision_check(int snake[], int snake_size, char grid[ROW][COL]){
 
 	return 0;
 }
+
 void move_snake(int snake[], int *snake_size, char snake_facing){
 	int i, row, column;
 	switch(snake_facing){
 		case '>':
-			row = snake[*snake_size - 1] / 100;
-			column = snake[*snake_size - 1] % 100 + 1;
+			row = snake[*snake_size - 1] / DIG;
+			column = snake[*snake_size - 1] % DIG + 1;
 			break;
 		case '^':
-			row = snake[*snake_size - 1] / 100 - 1;
-			column = snake[*snake_size - 1] % 100;
+			row = snake[*snake_size - 1] / DIG - 1;
+			column = snake[*snake_size - 1] % DIG;
 			break;
 		case '<':
-			row = snake[*snake_size - 1] / 100;
-			column = snake[*snake_size - 1] % 100 - 1;
+			row = snake[*snake_size - 1] / DIG;
+			column = snake[*snake_size - 1] % DIG - 1;
 			break;
 		case 'v':
-			row = snake[*snake_size - 1] / 100 + 1;
-			column = snake[*snake_size - 1] % 100;
+			row = snake[*snake_size - 1] / DIG + 1;
+			column = snake[*snake_size - 1] % DIG;
 			break;
 	}
 	for(i = 0; i < *snake_size - 1; i++){
 		snake[i] = snake[i + 1];
 	}
-	snake[*snake_size - 1] = row * 100 + column;
+	snake[*snake_size - 1] = row * DIG + column;
 }
 
 
@@ -79,18 +80,17 @@ int main(void){
     nodelay(stdscr, TRUE);
 
 	char grid[ROW][COL];
-
-
-
 	int snake[ROW * COL], snake_size;
 	char snake_facing = '>';
+	int i, j;
+    char buf;
+	char run = 1;
+
+	char moved = '>', move_delay = 12, move_delay_index = 0;
 
 	clearGrid(grid);
 	init_snake(snake, &snake_size);
 
-	int i, j;
-    char buf, run = 1, moved = '>',
-		 move_delay = 12, move_delay_index = 0;
     while (run){
 		buf = getch();
         switch (buf){
@@ -123,14 +123,14 @@ int main(void){
 		}
 
 		for(i = 0; i < snake_size - 1; i++){
-			grid[snake[i] / 100][snake[i] % 100] = '#';
+			grid[snake[i] / DIG][snake[i] % DIG] = '#';
 		} 
 		//Check the head before overwriting.
 		if (collision_check(snake,snake_size,grid) == 2){
 			run = 0;
 		}
 
-		grid[snake[snake_size - 1] / 100][snake[snake_size - 1] % 100] = '@';
+		grid[snake[snake_size - 1] / DIG][snake[snake_size - 1] % DIG] = '@';
 
 		for(i = 0; i < ROW; i++){
 			for(j = 0; j < COL; j++){
