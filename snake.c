@@ -39,7 +39,7 @@ int random_food_appear(char grid[ROW][COL], int snake_size){
     Input:
         grid[ROW][COL]: char
     Output:
-        void
+        the position of the food
     */	
 	int random_row = 0, random_column = 0;
 	if(snake_size >= ROW * COL)
@@ -85,7 +85,7 @@ void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 			row++;
 			break;
 	}
-	// if snake has eaten a fruit, increse its size
+	// if snake has eaten a food, increse its size
 	if(*grow){
 		*grow = 0;
 		(*snake_size)++;
@@ -111,7 +111,7 @@ int main(void){
 	nodelay(stdscr, TRUE);
 
 	char grid[ROW][COL];
-	int snake[ROW * COL], snake_size, fruit = 516, grow = 0;
+	int snake[ROW * COL], snake_size, food = 516, grow = 0;
 	char snake_facing = '>';
 	int i, j;
 	char buf;
@@ -147,7 +147,7 @@ int main(void){
 	clearGrid(grid);
 	erase();
 
-	grid[fruit / DIG][fruit % DIG] = 'o';
+	grid[food / DIG][food % DIG] = 'o';
 
 	if(move_delay < move_delay_index){
 		move_snake(snake, &snake_size, snake_facing, &grow);
@@ -163,7 +163,7 @@ int main(void){
 		run = 0;
 	}
 	else if(collision_check(grid, snake) == 1){
-		fruit = random_food_appear(grid, snake_size);
+		food = random_food_appear(grid, snake_size);
 		grow = 1;
 	}
 
