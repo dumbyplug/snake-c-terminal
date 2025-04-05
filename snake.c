@@ -129,19 +129,19 @@ int main(void){
 			if(moved != '<')
 				snake_facing = '>';
                 	break;
-            case 'w':
-		if(moved != 'v')
-			snake_facing = '^';
-                break;
-            case 'a':
-		if(moved != '>')
-			snake_facing = '<';
-                break;
-            case 's':
+        case 'w':
+			if(moved != 'v')
+				snake_facing = '^';
+            break;
+        case 'a':
+			if(moved != '>')
+				snake_facing = '<';
+        	break;
+        case 's':
 		    if(moved != '^')
 			    snake_facing = 'v';
-                break;
-            case 'q':
+			break;
+        case 'q':
                 run = 0;
         }
 	clearGrid(grid);
