@@ -89,34 +89,26 @@ int main(void){
 	init_snake(snake, &snake_size);
 
 	int i, j;
-    char buf, run = 1, moved = 0,
+    char buf, run = 1, moved = '>',
 		 move_delay = 12, move_delay_index = 0;
     while (run){
 		buf = getch();
         switch (buf){
             case 'd':
-				if((snake_facing != '<') && !moved){
+				if(moved != '<')
 					snake_facing = '>';
-					moved = 1;
-				}
                 break;
             case 'w':
-				if((snake_facing != 'v') && !moved){
+				if(moved != 'v')
 					snake_facing = '^';
-					moved = 1;
-				}
                 break;
             case 'a':
-				if((snake_facing != '>') && !moved){
+				if(moved != '>')
 					snake_facing = '<';
-					moved = 1;
-				}
                 break;
             case 's':
-				if((snake_facing != '^') && !moved){
+				if(moved != '^')
 					snake_facing = 'v';
-					moved = 1;
-				}
                 break;
             case 'q':
                 run = 0;
@@ -127,7 +119,7 @@ int main(void){
 		if(move_delay < move_delay_index){
 			move_snake(snake, &snake_size, snake_facing);
 			move_delay_index = 0;
-			moved = 0;
+			moved = snake_facing;
 		}
 
 		for(i = 0; i < snake_size - 1; i++){
