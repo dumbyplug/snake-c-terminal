@@ -8,10 +8,12 @@
 #define ROW 12
 #define DIG 100
 
+int i, j;
+
 void clearGrid(char grid[ROW][COL]){
 	// This function clears the grid. Fills every cell with whitespace
-	for(int i = 0; i < ROW; i++){
-		for(int j = 0; j < COL; j++){
+	for(i = 0; i < ROW; i++){
+		for(j = 0; j < COL; j++){
 			if((i == 0) || (i == ROW - 1))
 				grid[i][j] = 'E';
 
@@ -27,7 +29,7 @@ void clearGrid(char grid[ROW][COL]){
 void init_snake(int snake[], int *snake_size){
 	// This function initialize snake. It sets it body parts next to each other
 	*snake_size = 5;
-	for(int i = 0; i < *snake_size; i++){
+	for(i = 0; i < *snake_size; i++){
 		snake[*snake_size - i - 1] = 5 * DIG + (9 + i);
 	}
 }
@@ -69,7 +71,6 @@ char collision_check(char grid[ROW][COL], int snake[]){
 
 void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 	// moves snake to the direction it is looking 
-	int i;
 	int row = snake[0] / DIG, column = snake[0] % DIG;
 	switch(snake_facing){
 		case '>':
@@ -113,15 +114,11 @@ int main(void){
 	char grid[ROW][COL];
 	int snake[ROW * COL], snake_size, food = 516, grow = 0;
 	char snake_facing = '>';
-	int i, j;
-	char buf;
-	char run = 1;
-
-	char moved = '>', move_delay = 12, move_delay_index = 0;
 
 	clearGrid(grid);
 	init_snake(snake, &snake_size);
 
+	char buf, run = 1, moved = '>', move_delay = 12, move_delay_index = 0;
 	while (run){
 		buf = getch();
 		switch (buf){
