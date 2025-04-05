@@ -105,16 +105,16 @@ void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 int main(void){
 	// Initializing ncurses for getting real time input
 	initscr();
-    cbreak();
-    noecho();
-    keypad(stdscr, TRUE);  
-    nodelay(stdscr, TRUE);
+	cbreak();
+	noecho();
+	keypad(stdscr, TRUE);  
+	nodelay(stdscr, TRUE);
 
 	char grid[ROW][COL];
 	int snake[ROW * COL], snake_size, fruit = 516, grow = 0;
 	char snake_facing = '>';
 	int i, j;
-    char buf;
+	char buf;
 	char run = 1;
 
 	char moved = '>', move_delay = 12, move_delay_index = 0;
@@ -122,66 +122,65 @@ int main(void){
 	clearGrid(grid);
 	init_snake(snake, &snake_size);
 
-    while (run){
+	while (run){
 		buf = getch();
-        switch (buf){
-            case 'd':
-				if(moved != '<')
-					snake_facing = '>';
-                break;
+		switch (buf){
+		case 'd':
+			if(moved != '<')
+				snake_facing = '>';
+                	break;
             case 'w':
-				if(moved != 'v')
-					snake_facing = '^';
+		if(moved != 'v')
+			snake_facing = '^';
                 break;
             case 'a':
-				if(moved != '>')
-					snake_facing = '<';
+		if(moved != '>')
+			snake_facing = '<';
                 break;
             case 's':
-				if(moved != '^')
-					snake_facing = 'v';
+		    if(moved != '^')
+			    snake_facing = 'v';
                 break;
             case 'q':
                 run = 0;
         }
-		clearGrid(grid);
-		erase();
+	clearGrid(grid);
+	erase();
 
-		grid[fruit / DIG][fruit % DIG] = 'o';
+	grid[fruit / DIG][fruit % DIG] = 'o';
 
-		if(move_delay < move_delay_index){
-			move_snake(snake, &snake_size, snake_facing, &grow);
-			move_delay_index = 0;
-			moved = snake_facing;
+	if(move_delay < move_delay_index){
+		move_snake(snake, &snake_size, snake_facing, &grow);
+		move_delay_index = 0;
+		moved = snake_facing;
+	}
+
+	for(i = snake_size - 1; i > 0; i--){
+		grid[snake[i] / DIG][snake[i] % DIG] = '#';
+	} 
+	//Check the head before overwriting.
+	if (collision_check(grid, snake) == 2){
+		run = 0;
+	}
+	else if(collision_check(grid, snake) == 1){
+		fruit = random_food_appear(grid, snake_size);
+		grow = 1;
+	}
+
+	grid[snake[0] / DIG][snake[0] % DIG] = '@';
+
+	for(i = 0; i < ROW; i++){
+		for(j = 0; j < COL; j++){
+			printw("%c", grid[i][j]);
 		}
+		printw("\n");
+	}
 
-		for(i = snake_size - 1; i > 0; i--){
-			grid[snake[i] / DIG][snake[i] % DIG] = '#';
-		} 
-		//Check the head before overwriting.
-		if (collision_check(grid, snake) == 2){
-			run = 0;
-		}
-		else if(collision_check(grid, snake) == 1){
-			fruit = random_food_appear(grid, snake_size);
-			grow = 1;
-		}
-
-		grid[snake[0] / DIG][snake[0] % DIG] = '@';
-
-		for(i = 0; i < ROW; i++){
-			for(j = 0; j < COL; j++){
-				printw("%c", grid[i][j]);
-			}
-			printw("\n");
-		}
-
-		refresh();
-		move_delay_index++;
-		usleep(16000);
+	refresh();
+	move_delay_index++;
+	usleep(16000);
 
     }
-    
-	endwin();
+    endwin();
     return 0;
 }
