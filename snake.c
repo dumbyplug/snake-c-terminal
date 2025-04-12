@@ -119,15 +119,16 @@ int main(void){
 	cbreak();
 	noecho();
 	start_color();
+	use_default_colors();
 	keypad(stdscr, TRUE);  
 	nodelay(stdscr, TRUE);
 
-	init_pair(1, COLOR_RED,     COLOR_WHITE);
-	init_pair(2, COLOR_BLACK,   COLOR_WHITE);
-	init_pair(3, COLOR_GREEN,   COLOR_WHITE);
-	init_pair(4, COLOR_BLUE,    COLOR_WHITE);
+	init_pair(1, COLOR_RED,   -1);// COLOR_WHITE);
+	init_pair(2, COLOR_BLACK, -1);// COLOR_WHITE);
+	init_pair(3, COLOR_GREEN, -1);// COLOR_WHITE);
+	init_pair(4, COLOR_BLUE,  -1);// COLOR_WHITE);
 
-	wbkgd(stdscr, COLOR_PAIR(4));
+	//wbkgd(stdscr, COLOR_PAIR(4));
 
 	srand(time(NULL));
 
