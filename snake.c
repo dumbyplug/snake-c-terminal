@@ -116,19 +116,18 @@ void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 int main(void){
 	// Initializing ncurses for getting real time input
 	initscr();
-	cbreak();
+	//cbreak();
 	noecho();
 	start_color();
 	use_default_colors();
-	keypad(stdscr, TRUE);  
+	//keypad(stdscr, TRUE);  
 	nodelay(stdscr, TRUE);
 
 	init_pair(1, COLOR_RED,   -1);// COLOR_WHITE);
-	init_pair(2, COLOR_BLACK, -1);// COLOR_WHITE);
+	init_pair(2, COLOR_YELLOW,-1);// COLOR_WHITE);
 	init_pair(3, COLOR_GREEN, -1);// COLOR_WHITE);
 	init_pair(4, COLOR_BLUE,  -1);// COLOR_WHITE);
 
-	//wbkgd(stdscr, COLOR_PAIR(4));
 
 	srand(time(NULL));
 
