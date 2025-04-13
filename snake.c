@@ -8,12 +8,11 @@
 #define ROW 18
 #define DIG 100
 
-int i, j;
 
 void clearGrid(char grid[ROW][COL]){
 	// This function clears the grid. Fills every cell with whitespace
-	for(i = 0; i < ROW; i++){
-		for(j = 0; j < COL; j++){
+	for(int i = 0; i < ROW; i++){
+		for(int j = 0; j < COL; j++){
 			if((i == 0) || (i == ROW - 1))
 				grid[i][j] = 'E';
 
@@ -29,7 +28,7 @@ void clearGrid(char grid[ROW][COL]){
 void init_snake(int snake[], int *snake_size){
 	// This function initialize snake. It sets it body parts next to each other
 	*snake_size = 5;
-	for(i = 0; i < *snake_size; i++){
+	for(int i = 0; i < *snake_size; i++){
 		snake[*snake_size - i - 1] = 5 * DIG + (9 + i);
 	}
 }
@@ -103,7 +102,7 @@ void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 	}
 
 	// overwriting every element with one before.  
-	for(i = *snake_size - 1; i > 0; i--){
+	for(int i = *snake_size - 1; i > 0; i--){
 		snake[i] = snake[i - 1];
 	}
 
@@ -120,13 +119,13 @@ int main(void){
 	noecho();
 	start_color();
 	use_default_colors();
-	//keypad(stdscr, TRUE);  
+	keypad(stdscr, TRUE);  
 	nodelay(stdscr, TRUE);
 
-	init_pair(1, COLOR_RED,   -1);// COLOR_WHITE);
-	init_pair(2, COLOR_YELLOW,-1);// COLOR_WHITE);
-	init_pair(3, COLOR_GREEN, -1);// COLOR_WHITE);
-	init_pair(4, COLOR_BLUE,  -1);// COLOR_WHITE);
+	init_pair(1, COLOR_RED,   -1);
+	init_pair(2, COLOR_YELLOW,-1);
+	init_pair(3, COLOR_GREEN, -1);
+	init_pair(4, COLOR_BLUE,  -1);
 
 
 	srand(time(NULL));
@@ -145,11 +144,11 @@ int main(void){
 	while (run){
 		buf = getch();
 		switch (buf){
-		case 'd':
+		case 'd': 
 			if(moved != '<')
 				snake_facing = '>';
             break;
-        case 'w':
+		case 'w':
 			if(moved != 'v')
 				snake_facing = '^';
             break;
@@ -175,7 +174,7 @@ int main(void){
 		moved = snake_facing;
 	}
 
-	for(i = snake_size - 1; i > 0; i--){
+	for(int i = snake_size - 1; i > 0; i--){
 		grid[snake[i] / DIG][snake[i] % DIG] = '*';
 	} 
 	//Check the head before overwriting.
@@ -192,8 +191,8 @@ int main(void){
 
 	grid[snake[0] / DIG][snake[0] % DIG] = 'O';
 
-	for(i = 0; i < ROW; i++){
-		for(j = 0; j < COL; j++){
+	for(int i = 0; i < ROW; i++){
+		for(int j = 0; j < COL; j++){
 			switch(grid[i][j]){
 				case '@':
 					attron(COLOR_PAIR(1));
