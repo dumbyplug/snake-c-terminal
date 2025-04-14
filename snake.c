@@ -4,8 +4,8 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define COL 64
-#define ROW 18
+#define COL 25
+#define ROW 25
 #define DIG 100
 
 
@@ -206,7 +206,7 @@ int main(void){
 				default:
 					attron(COLOR_PAIR(4));
 			}
-			printw("%c", grid[i][j]);
+			printw("%c ", grid[i][j]);
 		}
 		printw("\n");
 	}
