@@ -4,9 +4,10 @@
 #include <time.h>
 #include <stdlib.h>
 
-#define COL 25
-#define ROW 25
 #define DIG 100
+
+const int COL = 30;
+const int ROW = 30;
 
 
 void clearGrid(char grid[ROW][COL]){
@@ -142,21 +143,20 @@ int main(void){
 
 	char buf, run = 1, moved = '>', move_delay = 8, move_delay_index = 0;
 	while (run){
-		buf = getch();
-		switch (buf){
-		case 'd': 
+		switch (getch()){
+		case 'd': case KEY_RIGHT:
 			if(moved != '<')
 				snake_facing = '>';
             break;
-		case 'w':
+		case 'w':case KEY_UP:
 			if(moved != 'v')
 				snake_facing = '^';
             break;
-        case 'a':
+        case 'a':case KEY_LEFT:
 			if(moved != '>')
 				snake_facing = '<';
         	break;
-        case 's':
+        case 's': case KEY_DOWN:
 		    if(moved != '^')
 			    snake_facing = 'v';
 			break;
