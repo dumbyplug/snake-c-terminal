@@ -6,12 +6,11 @@
 
 #define DIG 100
 
-const int COL = 20;
-const int ROW = COL;
+const int COL = 30;
+const int ROW = 30;
 
-const int difficulty = 0; 
 
-void clearGrid(char grid[ROW][COL], int wall_places[ROW*COL], int wall_size){
+void clearGrid(char grid[ROW][COL]){
 	// This function clears the grid. Fills every cell with whitespace
 	for(int i = 0; i < ROW; i++){
 		for(int j = 0; j < COL; j++){
@@ -24,8 +23,6 @@ void clearGrid(char grid[ROW][COL], int wall_places[ROW*COL], int wall_size){
 			else
 				grid[i][j] = ' ';
 		}
-	}for(int i = 0; i < wall_size; i++){
-		grid[wall_places[i] / DIG][wall_places[i] % 100] = 'E';
 	}
 }
 
@@ -67,27 +64,12 @@ int random_food_appear(int blank_spaces[], int size, int snake_size){
 	}
 }
 
-int random_wall_appear(int blank_spaces[], int size, int snake_size){
-    /*
-    This function generates a wall on random place in the screen, 
-	and each time snake eats the food, it regenerates the wall in 
-	another place.
-    */	
-	if(snake_size < (ROW - 1) * (COL - 1)){
-		int random_number = rand() % size;
-		return blank_spaces[random_number];
-	}else{
-		return -1;
-	}
-}
 
 char collision_check(char grid[ROW][COL], int snake[]){
 	//checking to see if snake's head collides with walls' symbols or its body's symbols
 	switch (grid[snake[0] / DIG][snake[0] % DIG]){
 		case 'H': 
 		case 'E':
-			if(difficulty == 0)
-				return 0;
 		case '*':
 			return 2;
 		case '@':
@@ -125,17 +107,6 @@ void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 		snake[i] = snake[i - 1];
 	}
 
-	if(difficulty == 0){
-		if(row < 1)
-			row = ROW - 2;
-		else if(row > ROW - 2)
-			row = 1;
-		if(column < 1)
-			column = COL - 2;
-		else if(column > COL - 2)
-			column = 1;
-	}
-
 	// setting snake's head to its new location
 	snake[0] = row * DIG + column;
 }
@@ -160,21 +131,17 @@ int main(void){
 
 	srand(time(NULL));
 
-	srand(time(NULL));
-
 	char grid[ROW][COL];
-	int snake[ROW * COL], snake_size, food = 516, grow = 0, size = 0, wall = 0;
+	int snake[ROW * COL], snake_size, food = 516, grow = 0, size = 0;
 	int blank_spaces[ROW * COL];
 	char snake_facing = '>';
-	int wall_places[ROW*COL], wall_size = 0;
 
-	clearGrid(grid, wall_places, wall_size);
+	clearGrid(grid);
 	init_snake(snake, &snake_size);
 
 	blank(grid, blank_spaces, &size);
 
-	char buf, run = 1, moved = '>', move_delay = 9, move_delay_index = 0;
-    int times_snake_moves = 0;
+	char buf, run = 1, moved = '>', move_delay = 8, move_delay_index = 0;
 	while (run){
 		switch (getch()){
 		case 'd': case KEY_RIGHT:
@@ -196,12 +163,10 @@ int main(void){
         case 'q':
             run = 0;
         }
-    clearGrid(grid, wall_places, wall_size);
-    erase();
+	clearGrid(grid);
+	erase();
 
-    grid[food / DIG][food % DIG] = '@';
-    grid[wall / DIG][wall % DIG] = 'E';
-    
+	grid[food / DIG][food % DIG] = '@';
 
 	if(move_delay < move_delay_index){
 		move_snake(snake, &snake_size, snake_facing, &grow);
@@ -212,35 +177,16 @@ int main(void){
 	for(int i = snake_size - 1; i > 0; i--){
 		grid[snake[i] / DIG][snake[i] % DIG] = '*';
 	} 
-
 	//Check the head before overwriting.
-    int collision = collision_check(grid, snake);
-    if(difficulty == 2){
-        if(collision != 1 && collision != 2){
-            if(times_snake_moves >= size){
-                collision = 1;
-                times_snake_moves = 0;
-            }else{
-                times_snake_moves++;
-            }
-        }else{
-            times_snake_moves = 0;
-        }
-    }
-	switch(collision){
+	switch(collision_check(grid, snake)){
 		case 2:
 			run = 0;
 			break;
 		case 1:
-            size = 0;
-            blank(grid, blank_spaces, &size);
-            food = random_food_appear(blank_spaces, size, snake_size);size = 0;
-            if(difficulty == 2){
-                blank(grid, blank_spaces, &size);
-                wall = random_wall_appear(blank_spaces, size, snake_size);
-                wall_places[wall_size] = wall;
-                wall_size++;
-            }grow = 1;
+			size = 0;
+			blank(grid, blank_spaces, &size);
+			food = random_food_appear(blank_spaces, size, snake_size);
+			grow = 1;
 	}
 
 	grid[snake[0] / DIG][snake[0] % DIG] = 'O';

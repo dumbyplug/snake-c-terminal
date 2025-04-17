@@ -4,7 +4,53 @@
 #include <time.h>
 #include <stdlib.h>
 
+int COL = 20;
+int ROW = 20;
+int DIFFICULTY = 1; 
+int SPEED = 9; 
+
+#include "snake.c"
+
+void configure(int row, int difficulty, int speed){
+	int row_value, speed_value;
+	switch(row){
+		case 1:
+			row_value = 10;
+			break;
+		case 2:
+			row_value = 15;
+			break;
+		case 3:
+			row_value = 20;
+			break;
+		case 4:
+			row_value = 25;
+			break;
+		case 5:
+			row_value = 30;
+			break;
+	}
+	switch(speed){
+		case 1:
+			speed_value = 12;
+			break;
+		case 2:
+			speed_value = 9;
+			break;
+		case 3:
+			speed_value = 6;
+			break;
+	}
+
+
+	COL = row_value;
+	ROW = row_value;
+	DIFFICULTY = difficulty - 1;
+	SPEED = speed_value;
+}
+
 int main() {
+	// Initializing ncurses for getting real time input
 	initscr();
 	//cbreak();
 	noecho();
@@ -196,6 +242,7 @@ int main() {
 					//
 					//
 					//
+					game();
 					printw("Game starts...");
 					//
 					//
@@ -222,6 +269,7 @@ int main() {
 				///////////////////////////////
 				///// config function here
 				///////////////////////////////
+				configure(gridSize, difficulty, speed);
 			}
 			break;
 		}
