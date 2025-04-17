@@ -6,10 +6,10 @@
 
 #define DIG 100
 
-const int COL = 30;
-const int ROW = 30;
+const int COL = 20;
+const int ROW = COL;
 
-const int difficulty = 2; 
+const int difficulty = 0; 
 
 void clearGrid(char grid[ROW][COL], int wall_places[ROW*COL], int wall_size){
 	// This function clears the grid. Fills every cell with whitespace
@@ -86,6 +86,8 @@ char collision_check(char grid[ROW][COL], int snake[]){
 	switch (grid[snake[0] / DIG][snake[0] % DIG]){
 		case 'H': 
 		case 'E':
+			if(difficulty == 0)
+				return 0;
 		case '*':
 			return 2;
 		case '@':
@@ -121,6 +123,17 @@ void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 	// overwriting every element with one before.  
 	for(int i = *snake_size - 1; i > 0; i--){
 		snake[i] = snake[i - 1];
+	}
+
+	if(difficulty == 0){
+		if(row < 1)
+			row = ROW - 2;
+		else if(row > ROW - 2)
+			row = 1;
+		if(column < 1)
+			column = COL - 2;
+		else if(column > COL - 2)
+			column = 1;
 	}
 
 	// setting snake's head to its new location
@@ -160,7 +173,7 @@ int main(void){
 
 	blank(grid, blank_spaces, &size);
 
-	char buf, run = 1, moved = '>', move_delay = 8, move_delay_index = 0;
+	char buf, run = 1, moved = '>', move_delay = 9, move_delay_index = 0;
     int times_snake_moves = 0;
 	while (run){
 		switch (getch()){

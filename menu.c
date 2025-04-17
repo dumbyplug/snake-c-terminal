@@ -1,6 +1,17 @@
+#include <unistd.h>
 #include <stdio.h>
+#include <ncurses.h>
+#include <time.h>
+#include <stdlib.h>
 
 int main() {
+	initscr();
+	//cbreak();
+	noecho();
+	start_color();
+	use_default_colors();
+	keypad(stdscr, TRUE);  
+	nodelay(stdscr, TRUE);
 
 	short menu = 0;
 	short select = 1, subSelect = 3;
@@ -14,31 +25,32 @@ int main() {
 	char message[50];
 
 	while (1) {
+		erase();
 		if (menu == 0) {
-			printf("+---- Snake Game ----+\n");
+			printw("+---- Snake Game ----+\n");
 
 			switch (select) {
 			case 1:
-				printf("|      > Play <      |\tStarts the game with\n"
+				printw("|      > Play <      |\tStarts the game with\n"
 					"|      Settings      |\tgiven settings...\n"
 					"|        Exit        |\n");
 				break;
 			case 2:
-				printf("|        Play        |\tConfigure settings\n"
+				printw("|        Play        |\tConfigure settings\n"
 					"|    > Settings <    |\tfor the game...\n"
 					"|        Exit        |\n");
 				break;
 			case 3:
-				printf("|        Play        |\tPlease don't click me...\n"
+				printw("|        Play        |\tPlease don't click me...\n"
 					"|      Settings      |\n"
 					"|      > Exit <      |\n");
 				break;
 			default:
-				printf("|  An error occured  |\n");
+				printw("|  An error occured  |\n");
 				break;
 			}
 
-			printf("+--------------------+\n");
+			printw("+--------------------+\n");
 		}
 		else {
 
@@ -82,70 +94,70 @@ int main() {
 				break;
 			}
 
-			printf("+----- Configuration -----+\n");
+			printw("+----- Configuration -----+\n");
 
 
 
-			printf("|   Grid size   ");
+			printw("|   Grid size   ");
 
 			if (select == 1 && subSelect != 1)
-				printf("< ");
+				printw("< ");
 			else
-				printf("  ");
+				printw("  ");
 
-			printf("%s", gridSizeText);
+			printw("%s", gridSizeText);
 
 			if (select == 1 && subSelect != subLimit)
-				printf(" >");
+				printw(" >");
 			else
-				printf("  ");
+				printw("  ");
 
-			printf(" |\n");
+			printw(" |\n");
 
 
 
-			printf("|  Difficulty   ");
+			printw("|  Difficulty   ");
 
 			if (select == 2 && subSelect != 1)
-				printf("< ");
+				printw("< ");
 			else
-				printf("  ");
+				printw("  ");
 
-			printf("%s", difficultyText);
+			printw("%s", difficultyText);
 
 			if (select == 2 && subSelect != subLimit)
-				printf(" >");
+				printw(" >");
 			else
-				printf("  ");
+				printw("  ");
 
-			printf(" |\n");
+			printw(" |\n");
 
 
 
-			printf("|       Speed   ");
+			printw("|       Speed   ");
 
 			if (select == 3 && subSelect != 1)
-				printf("< ");
+				printw("< ");
 			else
-				printf("  ");
+				printw("  ");
 
-			printf("%s", speedText);
+			printw("%s", speedText);
 
 			if (select == 3 && subSelect != subLimit)
-				printf(" >");
+				printw(" >");
 			else
-				printf("  ");
+				printw("  ");
 
-			printf(" |\n");
+			printw(" |\n");
 
 
 
-			printf("+-------------------------+\n");
+			printw("+-------------------------+\n");
 		}
 
 		switch (getch())
 		{
-		case 'w':
+		case 'w': case KEY_UP:
 			select--;
 			if (menu == 1) {
 				if (select == 1)
@@ -156,7 +168,7 @@ int main() {
 					subSelect = speed;
 			}
 			break;
-		case 's':
+		case 's': case KEY_DOWN:
 			select++;
 			if (menu == 1) {
 				if (select == 1)
@@ -167,11 +179,11 @@ int main() {
 					subSelect = speed;
 			}
 			break;
-		case 'a':
+		case 'a': case KEY_LEFT:
 			if (menu == 1)
 				subSelect--;
 			break;
-		case 'd':
+		case 'd': case KEY_RIGHT:
 			if (menu == 1)
 				subSelect++;
 			break;
@@ -184,7 +196,7 @@ int main() {
 					//
 					//
 					//
-					printf("Game starts...");
+					printw("Game starts...");
 					//
 					//
 					//
@@ -198,7 +210,8 @@ int main() {
 					subSelect = gridSize;
 					break;
 				case 3:
-					exit();
+					endwin();
+					exit(0);
 					break;
 				}
 			}
@@ -247,10 +260,10 @@ int main() {
 			subSelect = subLimit;
 		else if (subSelect <= 0)
 			subSelect = 1;
-
-		printf("\x1b[2J\x1b[H");
-
+		refresh();
+		usleep(16000);
 	}
 
+    endwin();
 	return 0;
 }
