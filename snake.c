@@ -258,6 +258,10 @@ int game(void){
 			}
 			printw("%c ", grid[i][j]);
 		}
+		if(i == (ROW / 2 - 1)){
+			attron(COLOR_PAIR(5));
+			printw("\tYour score is: %d", snake_size - 3);
+		}
 		printw("\n");
 	}
 
@@ -266,7 +270,7 @@ int game(void){
 	usleep(16000);
 
     }
-    endwin();
 	attron(COLOR_PAIR(5));
+    //endwin();
     return 0;
 }
