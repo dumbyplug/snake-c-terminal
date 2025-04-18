@@ -27,9 +27,9 @@ void clearGrid(char grid[ROW][COL], int wall_places[ROW*COL], int wall_size){
 
 void init_snake(int snake[], int *snake_size){
 	// This function initialize snake. It sets it body parts next to each other
-	*snake_size = 5;
+	*snake_size = 3;
 	for(int i = 0; i < *snake_size; i++){
-		snake[*snake_size - i - 1] = 5 * DIG + (9 + i);
+		snake[*snake_size - i - 1] = (ROW / 2 - 1) * DIG + (1 + i);
 	}
 }
 
