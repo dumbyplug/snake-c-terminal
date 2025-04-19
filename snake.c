@@ -187,7 +187,7 @@ int game(void){
     int collision = collision_check(grid, snake);
     if(DIFFICULTY == 2){
         if(collision != 1 && collision != 2){
-            if(times_snake_moves >= size){
+            if(times_snake_moves >= size + wall_size){
                 collision = 1;
                 times_snake_moves = 0;
             }else{
