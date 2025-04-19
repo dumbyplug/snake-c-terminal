@@ -212,10 +212,7 @@ int game(void){
             blank(grid, blank_spaces, &size);
             food = random_blank_space(blank_spaces, size, snake_size);
 			int x = coordinates(grid, food / 100, food % 100);
-			while(x >= 3){
-				food = random_blank_space(blank_spaces, size, snake_size);
-				int x = coordinates(grid, food / 100, food % 100);
-			}
+			grid[food / DIG][food % DIG] = '@';
 			if(x < 3){
 				size = 0;
 				if(DIFFICULTY == 2){
