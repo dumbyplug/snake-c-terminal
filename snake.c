@@ -234,7 +234,7 @@ int game(void){
 		}
 		if(i == (ROW / 2 - 1)){
 			attron(COLOR_PAIR(5));
-			printw("\tYour score is: %d", snake_size - 3);
+			printw("\tYour score is: %d", (snake_size - 3)*100);
 		}
 		printw("\n");
 	}
