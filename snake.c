@@ -120,7 +120,26 @@ void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 	snake[0] = row * DIG + column;
 }
 
-
+int coordinates(char grid[ROW][COL], int row, int col){
+	int c = 0;
+	if(grid[row + 1][col] == 'E' && (row + 1 != ROW - 1 && (col != COL - 1 && col != 0))){
+		c++;
+	}if(grid[row + 1][col + 1] == 'E' && (row + 1 != ROW - 1 && col + 1!= COL - 1)){
+		c++;
+	}if(grid[row + 1][col - 1] == 'E' && (row + 1 != ROW - 1 && col - 1 != 0)){
+		c++;
+	}if(grid[row - 1][col] == 'E' && (row - 1 != 0 && (col != COL - 1 && col != 0))){
+		c++;
+	}if(grid[row][col + 1] == 'E' && ((row != ROW - 1 && row != 0) && col + 1 != COL - 1)){
+		c++;
+	}if(grid[row][col - 1] == 'E' && ((row != ROW - 1 && row != 0) && col - 1 != 0)){
+		c++;
+	}if(grid[row - 1][col - 1] == 'E' && (row - 1 != 0 && col - 1 != 0)){
+		c++;
+	}if(grid[row - 1][col + 1] == 'E' && (row - 1 != 0 && col + 1 != COL - 1)){
+		c++;
+	}return c;
+}
 
 int game(void){
 	// initializing colors
@@ -186,19 +205,6 @@ int game(void){
 	//Check the head before overwriting.
     int collision = collision_check(grid, snake);
 	int changed = 0;
-    if(DIFFICULTY == 2){
-        if(collision != 1 && collision != 2){
-            if(times_snake_moves >= size + wall_size){
-                collision = 1;
-                times_snake_moves = 0;
-				changed = 1;
-            }else{
-                times_snake_moves++;
-            }
-        }else{
-            times_snake_moves = 0;
-        }
-    }
 	switch(collision){
 		case 2:
 			run = 0;
@@ -206,14 +212,18 @@ int game(void){
 		case 1:
             size = 0;
             blank(grid, blank_spaces, &size);
-            food = random_blank_space(blank_spaces, size, snake_size);size = 0;
-            if(DIFFICULTY == 2){
-                blank(grid, blank_spaces, &size);
-                wall = random_blank_space(blank_spaces, size, snake_size);
-                wall_places[wall_size] = wall;
-                wall_size++;
-            }if(changed == 0){
-				grow = 1;
+            food = random_blank_space(blank_spaces, size, snake_size);
+			int x = coordinates(grid, food / 100, food % 100);
+			if(x < 3){
+				size = 0;
+				if(DIFFICULTY == 2){
+					blank(grid, blank_spaces, &size);
+					wall = random_blank_space(blank_spaces, size, snake_size);
+					wall_places[wall_size] = wall;
+					wall_size++;
+				}if(changed == 0){
+					grow = 1;
+				}
 			}
 	}
 
