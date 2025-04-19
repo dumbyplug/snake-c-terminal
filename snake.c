@@ -163,7 +163,7 @@ int game(void){
 	blank(grid, blank_spaces, &size);
 
 	char run = 1, moved = '>', move_index = 0;
-    int times_snake_moves = 0, x;
+    int times_snake_moves = 0;
 	while (run){
 		switch (getch()){
 		case 'd': case KEY_RIGHT:
@@ -203,26 +203,25 @@ int game(void){
 		} 
 	
 		//Check the head before overwriting.
-	    
 		switch(collision_check(grid, snake)){
-			case 2:
-				run = 0;
-				break;
-			case 1:
-	            size = 0;
-	            blank(grid, blank_spaces, &size);
-				grow = 1;
-	            food = random_blank_space(blank_spaces, size, snake_size);
-				x = coordinates(grid, food / 100, food % 100);
-				if(x < 3){
-					size = 0;
-					if(DIFFICULTY == 2){
-						blank(grid, blank_spaces, &size);
-						wall = random_blank_space(blank_spaces, size, snake_size);
-						wall_places[wall_size] = wall;
-						wall_size++;
-					}
+		case 2:
+			run = 0;
+			break;
+		case 1:
+	        size = 0;
+	        blank(grid, blank_spaces, &size);
+			grow = 1;
+	        food = random_blank_space(blank_spaces, size, snake_size);
+
+			if(coordinates(grid, food / 100, food % 100) < 3){
+				size = 0;
+				if(DIFFICULTY == 2){
+					blank(grid, blank_spaces, &size);
+					wall = random_blank_space(blank_spaces, size, snake_size);
+					wall_places[wall_size] = wall;
+					wall_size++;
 				}
+			}
 		}
 	
 		grid[snake[0] / DIG][snake[0] % DIG] = 'O';
@@ -246,7 +245,7 @@ int game(void){
 			}
 			if(i == (ROW / 2 - 1)){
 				attron(COLOR_PAIR(5));
-				printw("\tYour score is: %d", (snake_size-3) * 100);
+				printw("\tYour score is: %d", snake_size - 3);
 			}
 			printw("\n");
 		}
@@ -254,8 +253,7 @@ int game(void){
 		refresh();
 		move_index++;
 		usleep(16000);
-	
-	    }
+	}
 	attron(COLOR_PAIR(5));
     //endwin();
     return 0;
