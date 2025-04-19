@@ -6,7 +6,6 @@
 
 #define DIG 100
 
-
 void clearGrid(char grid[ROW][COL], int wall_places[ROW*COL], int wall_size){
 	// This function clears the grid. Fills every cell with whitespace
 	for(int i = 0; i < ROW; i++){
@@ -45,7 +44,7 @@ void blank(char grid[ROW][COL], int blank_spaces[], int *size){
 }
 
 
-int random_food_appear(int blank_spaces[], int size, int snake_size){
+int random_blank_space(int blank_spaces[], int size, int snake_size){
     /*
     This function generates a food on random place in the screen, 
 	and each time snake eats the food, it regenerates the food in 
@@ -53,28 +52,13 @@ int random_food_appear(int blank_spaces[], int size, int snake_size){
     Input:
         grid[ROW][COL]: char
     Output:
-        void
-    */	
-	if(snake_size < (ROW - 1) * (COL - 1)){
-		int random_number = rand() % size;
-		return blank_spaces[random_number];
-	}else{
+        int
+    */
+	if(snake_size >= (ROW - 1) * (COL - 1)){
 		return -1;
-	}
-}
 
-int random_wall_appear(int blank_spaces[], int size, int snake_size){
-    /*
-    This function generates a wall on random place in the screen, 
-	and each time snake eats the food, it regenerates the wall in 
-	another place.
-    */	
-	if(snake_size < (ROW - 1) * (COL - 1)){
-		int random_number = rand() % size;
-		return blank_spaces[random_number];
-	}else{
-		return -1;
-	}
+	int random_number = rand() % size;
+	return blank_spaces[random_number];
 }
 
 char collision_check(char grid[ROW][COL], int snake[]){
@@ -139,17 +123,7 @@ void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
 
 
 int game(void){
-	// Initializing ncurses for getting real time input
-	
-	/*initscr();
-	//cbreak();
-	noecho();
-	start_color();
-	use_default_colors();
-	keypad(stdscr, TRUE);  
-	nodelay(stdscr, TRUE);
-	*/
-
+	// initializing colors
 	init_pair(1, COLOR_RED,   -1);
 	init_pair(2, COLOR_YELLOW,-1);
 	init_pair(3, COLOR_GREEN, -1);
@@ -230,10 +204,10 @@ int game(void){
 		case 1:
             size = 0;
             blank(grid, blank_spaces, &size);
-            food = random_food_appear(blank_spaces, size, snake_size);size = 0;
+            food = random_blank_space(blank_spaces, size, snake_size);size = 0;
             if(DIFFICULTY == 2){
                 blank(grid, blank_spaces, &size);
-                wall = random_wall_appear(blank_spaces, size, snake_size);
+                wall = random_blank_space(blank_spaces, size, snake_size);
                 wall_places[wall_size] = wall;
                 wall_size++;
             }grow = 1;
