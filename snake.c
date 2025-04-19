@@ -54,7 +54,7 @@ int random_blank_space(int blank_spaces[], int size, int snake_size){
     Output:
         int
     */
-	if(snake_size >= (ROW - 1) * (COL - 1)){
+	if(snake_size >= (ROW - 1) * (COL - 1))
 		return -1;
 
 	int random_number = rand() % size;
