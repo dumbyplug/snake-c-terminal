@@ -211,9 +211,9 @@ int game(void){
             size = 0;
             blank(grid, blank_spaces, &size);
             food = random_blank_space(blank_spaces, size, snake_size);
-			int x = coordinates(grid, food / 100, food % 100);
+			
 			grid[food / DIG][food % DIG] = '@';
-			if(x < 3){
+			if(coordinates(grid, food / 100, food % 100) < 3){
 				size = 0;
 				if(DIFFICULTY == 2){
 					blank(grid, blank_spaces, &size);
@@ -245,7 +245,7 @@ int game(void){
 		}
 		if(i == (ROW / 2 - 1)){
 			attron(COLOR_PAIR(5));
-			printw("\tYour score is: %d", (snake_size - 3)*100);
+			printw("\tYour score is: %d", (snake_size - 3));
 		}
 		printw("\n");
 	}
@@ -256,6 +256,10 @@ int game(void){
 
     }
 	attron(COLOR_PAIR(5));
+    erase();
+	printw("\n\n\t\tSkill Issue: %d", snake_size - 3);
+	refresh();
+	usleep(2000000);
     //endwin();
     return 0;
 }
