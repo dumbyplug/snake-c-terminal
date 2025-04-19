@@ -203,9 +203,8 @@ int game(void){
 	} 
 
 	//Check the head before overwriting.
-    int collision = collision_check(grid, snake);
-	int changed = 0;
-	switch(collision){
+    
+	switch(collision_check(grid, snake)){
 		case 2:
 			run = 0;
 			break;
@@ -221,8 +220,6 @@ int game(void){
 					wall = random_blank_space(blank_spaces, size, snake_size);
 					wall_places[wall_size] = wall;
 					wall_size++;
-				}if(changed == 0){
-					grow = 1;
 				}
 			}
 	}
@@ -248,7 +245,7 @@ int game(void){
 		}
 		if(i == (ROW / 2 - 1)){
 			attron(COLOR_PAIR(5));
-			printw("\tYour score is: %d", (snake_size - 3)*100);
+			printw("\tYour score is: %d", (snake_size - 3) * 100);
 		}
 		printw("\n");
 	}
