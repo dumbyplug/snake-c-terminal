@@ -238,16 +238,8 @@ int main() {
 				switch (select)
 				{
 				case 1:
-					////////////// Game starts here
-					//
-					//
-					//
 					game();
 					printw("Game starts...");
-					//
-					//
-					//
-					////////////////////////////// nigga
 					break;
 				case 2:
 					menu = 1;
@@ -266,9 +258,6 @@ int main() {
 				menu = 0;
 				select = 1;
 				limit = 3;
-				///////////////////////////////
-				///// config function here
-				///////////////////////////////
 				configure(gridSize, difficulty, speed);
 			}
 			break;
@@ -287,7 +276,6 @@ int main() {
 			}
 		}
 
-
 		switch (select)
 		{
 		case 1:
@@ -302,7 +290,6 @@ int main() {
 		default:
 			subLimit = 5;
 		}
-
 
 		if (subSelect > subLimit)
 			subSelect = subLimit;

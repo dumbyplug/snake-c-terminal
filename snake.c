@@ -33,6 +33,7 @@ void init_snake(int snake[], int *snake_size){
 }
 
 void blank(char grid[ROW][COL], int blank_spaces[], int *size){
+	// This function get all the coordinates of blank spaces
 	for(int i = 0; i < ROW; i++){
 		for(int j = 0; j < COL; j++){
 			if(grid[i][j] == ' '){
@@ -45,15 +46,7 @@ void blank(char grid[ROW][COL], int blank_spaces[], int *size){
 
 
 int random_blank_space(int blank_spaces[], int size, int snake_size){
-    /*
-    This function generates a food on random place in the screen, 
-	and each time snake eats the food, it regenerates the food in 
-	another place and keeps score.
-    Input:
-        grid[ROW][COL]: char
-    Output:
-        int
-    */
+    // This function generates an coordinate of a blank space, 
 	if(snake_size >= (ROW - 1) * (COL - 1))
 		return -1;
 
@@ -78,7 +71,7 @@ char collision_check(char grid[ROW][COL], int snake[]){
 }
 
 void move_snake(int snake[], int *snake_size, char snake_facing, int *grow){
-	// moves snake to the direction it is looking 
+	// this function moves snake to the direction it is looking 
 	int row = snake[0] / DIG, column = snake[0] % DIG;
 	switch(snake_facing){
 		case '>':
@@ -260,6 +253,5 @@ int game(void){
 	printw("\n\n\t\tSkill Issue: %d", snake_size - 3);
 	refresh();
 	usleep(2000000);
-    //endwin();
     return 0;
 }
